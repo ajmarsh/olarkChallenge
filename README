@@ -1,0 +1,6 @@
+# Olark Challenge
+#
+# Create 2 nginx webservers, behind 1 haproxy server, and test with siege. 
+# all using automated deployment scripts and puppet.
+#
+
