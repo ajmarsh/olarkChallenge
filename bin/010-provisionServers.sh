@@ -10,13 +10,13 @@ EC2_CERT=/Users/ajmarsh/olarkSecret/cert-WGOZWJT7ZQ6D2GPF5WFEMI5EMZYBYMYE.pem
 # rewrite as loop in case you want to expand the numebr of servers
 # obtain static IP address for our instances
 
-#IPADDR0=$(/Users/ajmarsh/ec2-api-tools/bin/ec2-allocate-address | awk '{ print $2; }' )
-#IPADDR1=$(/Users/ajmarsh/ec2-api-tools/bin/ec2-allocate-address | awk '{ print $2; }' )
-#IPADDR2=$(/Users/ajmarsh/ec2-api-tools/bin/ec2-allocate-address | awk '{ print $2; }' )
-#IPADDR3=$(/Users/ajmarsh/ec2-api-tools/bin/ec2-allocate-address | awk '{ print $2; }' )
-#IPADDR4=$(/Users/ajmarsh/ec2-api-tools/bin/ec2-allocate-address | awk '{ print $2; }' )
+IPADDR0=$(/Users/ajmarsh/ec2-api-tools/bin/ec2-allocate-address | awk '{ print $2; }' )
+IPADDR1=$(/Users/ajmarsh/ec2-api-tools/bin/ec2-allocate-address | awk '{ print $2; }' )
+IPADDR2=$(/Users/ajmarsh/ec2-api-tools/bin/ec2-allocate-address | awk '{ print $2; }' )
+IPADDR3=$(/Users/ajmarsh/ec2-api-tools/bin/ec2-allocate-address | awk '{ print $2; }' )
+IPADDR4=$(/Users/ajmarsh/ec2-api-tools/bin/ec2-allocate-address | awk '{ print $2; }' )
 #
-#echo $IPADDR1 $IPADDR2 $IPADDR3 $IPADDR4 $IPADDR5
+echo " your IP addresses : $IPADDR1 $IPADDR2 $IPADDR3 $IPADDR4 $IPADDR5"
 
 # generate keypair if it does not exist
 if [ -f ~ajmarsh/olarkSecret/olarkKey.pem ];
@@ -30,20 +30,20 @@ fi
 
 # launch 2 webservers 
 # rewrite as loop in case you want to chage number of servers
-ec2-run-instances ami-a29943cb -K $EC2_PRIVATE_KEY -C $EC2_CERT -k olarkKey -g olarkWeb --instance-type t1.micro -z us-east-1a
-ec2-run-instances ami-a29943cb -K $EC2_PRIVATE_KEY -C $EC2_CERT -k olarkKey -g olarkWeb --instance-type t1.micro -z us-east-1a
+ec2-run-instances ami-a29943cb -K $EC2_PRIVATE_KEY -C $EC2_CERT -k olarkKey -g olarkSec --instance-type t1.micro -z us-east-1a
+ec2-run-instances ami-a29943cb -K $EC2_PRIVATE_KEY -C $EC2_CERT -k olarkKey -g olarkSec --instance-type t1.micro -z us-east-1a
 
 # launch 1 haproxy server
 # rewrite as loop in case you want to chage number of servers
-ec2-run-instances ami-a29943cb -K $EC2_PRIVATE_KEY -C $EC2_CERT -k olarkKey -g olarkWeb --instance-type t1.micro -z us-east-1a
+ec2-run-instances ami-a29943cb -K $EC2_PRIVATE_KEY -C $EC2_CERT -k olarkKey -g olarkSec --instance-type t1.micro -z us-east-1a
 
 # launch 2 siege util servers
 # rewrite as loop in case you want to chage number of servers
-ec2-run-instances ami-a29943cb -K $EC2_PRIVATE_KEY -C $EC2_CERT -k olarkKey -g olarkWeb --instance-type t1.micro -z us-east-1a
-ec2-run-instances ami-a29943cb -K $EC2_PRIVATE_KEY -C $EC2_CERT -k olarkKey -g olarkWeb --instance-type t1.micro -z us-east-1a
+ec2-run-instances ami-a29943cb -K $EC2_PRIVATE_KEY -C $EC2_CERT -k olarkKey -g olarkSec --instance-type t1.micro -z us-east-1a
+ec2-run-instances ami-a29943cb -K $EC2_PRIVATE_KEY -C $EC2_CERT -k olarkKey -g olarkSec --instance-type t1.micro -z us-east-1a
 
 # assign static IP addresses to our instances
-array=( $( ec2-describe-instances | awk '{ print $2; }' | grep "i-" ) )
+array=( $( ec2-describe-instances | grep -v terminated | awk '{ print $2; }' | grep "i-" ) )
 SERVER0=${array[0]}
 SERVER1=${array[1]}
 SERVER2=${array[2]}
@@ -57,6 +57,6 @@ ec2-associate-address -i $SERVER2 $IPADDR2
 ec2-associate-address -i $SERVER3 $IPADDR3
 ec2-associate-address -i $SERVER4 $IPADDR4
 
-
+ec2-describe-addresses
 
 

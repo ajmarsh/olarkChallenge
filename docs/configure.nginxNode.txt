@@ -1,0 +1,37 @@
+# Configure nginx to run node.js app
+
+vim /etc/nginx/sites-available/nodetest
+
+# the IP(s) on which your node server is running i choose the port 3000
+upstream ec2-23-20-222-108.compute-1.amazonaws.com {
+    server 127.0.0.1:3000;
+}
+
+# the nginx server instance
+server {
+    listen 0.0.0.0:80;
+    server_name ec2-23-20-222-108.compute-1.amazonaws.com yourdomain;
+    access_log /var/log/nginx/yourdomain.log;
+
+    # pass the request to the node.js server with the correct headers and much more can be added, see nginx config options
+    location / {
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header Host $http_host;
+      proxy_set_header X-NginX-Proxy true;
+
+      proxy_pass http://ec2-23-20-222-108.compute-1.amazonaws.com/;
+      proxy_redirect off;
+    }
+ }
+
+
+# dont forget to link it to sites-enabled
+ln -s /etc/nginx/sites-available/nodetest nodetest
+service nginx restart
+
+# launch node app
+node /usr/share/nginx/www/helloWorld.js
+
+
+

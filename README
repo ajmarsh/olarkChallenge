@@ -9,7 +9,7 @@ Required Tech
 Amazon EC2 account w/ key-pair and x509 cert
 Amazon EC2 API tools
 A reasonable looking .bashrc ( see examples folder )
-
+The Bash shell
 
 The scripts
 

@@ -1,0 +1,22 @@
+sudo apt-get install siege
+
+First dry run no optimization no node.js page
+
+siege -c20 -t1M http://ec2-23-20-222-108.compute-1.amazonaws.com
+
+Lifting the server siege...      done.
+Transactions:		        2384 hits
+Availability:		      100.00 %
+Elapsed time:		       59.59 secs
+Data transferred:	        0.28 MB
+Response time:		        0.00 secs
+Transaction rate:	       40.01 trans/sec
+Throughput:		        0.00 MB/sec
+Concurrency:		        0.07
+Successful transactions:        2384
+Failed transactions:	           0
+Longest transaction:	        0.04
+Shortest transaction:	        0.00
+ 
+FILE: /var/siege.log
+
