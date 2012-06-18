@@ -17,13 +17,13 @@ n_total=$(( $n_web + $n_proxy + $n_load ))
 # obtain static IP address for our instances
 echo "obtaining your IP addresses, this will take a moment..."
 
-for i in `seq 0 $n_total`; do
+for i in `seq 1 $n_total`; do
     IPADDR[$i]=$( /Users/ajmarsh/ec2-api-tools/bin/ec2-allocate-address | awk '{ print $2; }' )
 done
 
 echo " your IP addresses : "
 
-for i in `seq 0 $n_total`; do
+for i in `seq 1 $n_total`; do
 	echo "${IPADDR[$i]} "
 done
 
@@ -59,7 +59,7 @@ done
 # assign static IP addresses to our instances
 SERVER=( $( ec2-describe-instances | grep -v terminated | awk '{ print $2; }' | grep "i-" ) )
 
-for i in `seq 0 $n_total` ; do
+for i in `seq 1 $n_total` ; do
 	ec2-associate-address -i ${SERVER[$i]} ${IPADDR[$i]}
 done
 
