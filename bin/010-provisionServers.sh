@@ -63,6 +63,6 @@ for i in `seq 1 $n_total` ; do
 	ec2-associate-address -i ${SERVER[$i]} ${IPADDR[$i]}
 done
 
-ec2-describe-addresses
+ec2-describe-addresses | mail -s "olark servers are up" ajmarsh@gmail.com
 
 

@@ -8,3 +8,5 @@ class ntp {
         ensure => running,
     }
 }
+
+notify {"ntp service":}
