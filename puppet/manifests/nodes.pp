@@ -10,6 +10,7 @@ node webserver2 {
 
 node haproxyserver1 {
     include ntp
+    include haproxy
 }
 
 node siegeserver1 {
